@@ -13,25 +13,25 @@ controller:
     left_front_wheel:
       p: *p
       i: 0.0
-      d: 0.1
+      d: 0.03
       i_clamp: 0.0
       antiwindup: false
     right_front_wheel:
       p: *p
       i: 0.0
-      d: 0.1
+      d: 0.03
       i_clamp: 0.0
       antiwindup: false
     left_back_wheel:
       p: *p
       i: 0.0
-      d: 0.1
+      d: 0.03
       i_clamp: 0.0
       antiwindup: false
     right_back_wheel:
       p: *p
       i: 0.0
-      d: 0.1
+      d: 0.03
       i_clamp: 0.0
       antiwindup: false
 

@@ -75,7 +75,7 @@ void HeroChassisController::starting(const ros::Time& time) {
   vy_cmd_ = 0.0;
   wz_cmd_ = 0.0;
   // ===== 任务8: 底盘加速度限制（新增结束） =====
-  // ===== 任务6: 里程计（新增） =====
+  // ===== 任务6: 里程计 =====
   odom_x_ = 0.0;
   odom_y_ = 0.0;
   odom_th_ = 0.0;
@@ -84,7 +84,7 @@ void HeroChassisController::starting(const ros::Time& time) {
 
 void HeroChassisController::update(const ros::Time& time,
                                    const ros::Duration& period) {
-  const geometry_msgs::Twist cmd = *cmd_vel_buffer_.readFromRT();
+  const geometry_msgs::Twist cmd = *cmd_vel_buffer_.readFromRT();   //real-Time（实时） 
 
   const double k = (wheel_base_ + wheel_track_) / 2.0;
   const double r = wheel_radius_;
@@ -113,11 +113,11 @@ void HeroChassisController::update(const ros::Time& time,
   // ===== 任务6: 里程计（新增） =====
   // 正运动学：由四个轮子的实际角速度求底盘在 base_link 下的速度
   const double w0 = joints_[0].getVelocity();
-  const double w1 = joints_[1].getVelocity();
+  const double w1 = joints_[1].getVelocity();  //调用句柄的函数
   const double w2 = joints_[2].getVelocity();
   const double w3 = joints_[3].getVelocity();
 
-  const double base_vx = r * (w0 + w1 + w2 + w3) / 4.0;
+  const double base_vx = r * (w0 + w1 + w2 + w3) / 4.0;  //平均线速度
   const double base_vy = r * (-w0 + w1 + w2 - w3) / 4.0;
   const double base_wz = r * (-w0 + w1 - w2 + w3) / (4.0 * k);
 
@@ -125,7 +125,7 @@ void HeroChassisController::update(const ros::Time& time,
   odom_x_ += (base_vx * std::cos(odom_th_) - base_vy * std::sin(odom_th_)) * dt;
   odom_y_ += (base_vx * std::sin(odom_th_) + base_vy * std::cos(odom_th_)) * dt;
   odom_th_ += base_wz * dt;
-
+  
   // 限频约 50Hz 发布 /odom 与 tf(odom -> base_link)
   if ((time - last_odom_time_).toSec() >= 0.02) {
     last_odom_time_ = time;

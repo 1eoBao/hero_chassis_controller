@@ -5,7 +5,7 @@
 `hero_chassis_controller` 是一个用于 RoboMaster 英雄机器人麦克纳姆轮底盘的 ROS 控制器。
 它通过 `ros_control` 以 pluginlib 插件的形式加载到 Gazebo 仿真中，实现底盘的闭环速度控制、
 逆运动学、里程计以及底盘加速度限制。
-
+# 完成除7以外的功能以及额外的控制底盘加速度功能
 ## 主要功能
 
 - 基于 `/cmd_vel` 的麦克纳姆轮逆运动学，计算四个轮子的目标转速
@@ -74,6 +74,13 @@ rostopic pub -1 /cmd_vel geometry_msgs/Twist "{}"
 都有独立的 PID 参数：`p`、`i`、`d`、`i_clamp`、`antiwindup`。
 p参数已经调好
 
+## 个人总结
+45 pid控制机器人，通过yaml文件设置pid参数，参数p已经调过了，但是添加了参数d会出现rqt曲线突然上升又下降的周期性问题，在d参数取0后没有出现该问题，减小d值到0.03曲线， 通过逆运动学算出目标轮子角速度再通过pid控制循环使得四个轮子速度曲线平稳，可以前进转弯或者横向移动
+
+6 正运动学计算里程，方式是调用轮子分别对应的句柄函数求四轮线速度平均值，积分获得odom坐标的位姿，并且获得机器人目前朝向角，最后先把坐标从odem转换成baselink再通过update的时间戳限制频率为50hz发布出去，echo odom/twist/twist/linear查看里程记
+
+8 在config文件设置max加速度，角度加速度，主程序函数控制线速度和角速度加速度
+，方式是新建函数通过慢慢均匀提高目标线速度控制目标速度，某一方向的目标速度最后合成成每个轮子的目标速度，观察到轮子速度变化均匀
 ## 参考资料
 https://deepwiki.com/ros-controls/ros_control/5.1-creating-a-custom-controller
 https://github.com/ros-controls/ros_controllers/blob/noetic-devel/effort_controllers/src/joint_velocity_controller.cpp
