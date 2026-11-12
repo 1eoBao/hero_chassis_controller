@@ -1,6 +1,39 @@
 controller:
   hero_chassis_controller:
+    const: &p 5.0
     type: hero_chassis_controller/HeroChassisController
+    wheel_radius: 0.07625
+    wheel_base: 0.4
+    wheel_track: 0.4
+    max_effort: 5.0
+    # ===== 任务8: 底盘加速度限制（新增） =====
+    max_linear_acceleration: 1.0    # m/s^2，<=0 表示不限制
+    max_angular_acceleration: 2.0   # rad/s^2，<=0 表示不限制
+    # ===== 任务8: 底盘加速度限制（新增结束） =====
+    left_front_wheel:
+      p: *p
+      i: 0.0
+      d: 0.1
+      i_clamp: 0.0
+      antiwindup: false
+    right_front_wheel:
+      p: *p
+      i: 0.0
+      d: 0.1
+      i_clamp: 0.0
+      antiwindup: false
+    left_back_wheel:
+      p: *p
+      i: 0.0
+      d: 0.1
+      i_clamp: 0.0
+      antiwindup: false
+    right_back_wheel:
+      p: *p
+      i: 0.0
+      d: 0.1
+      i_clamp: 0.0
+      antiwindup: false
 
   joint_state_controller:
     type: joint_state_controller/JointStateController

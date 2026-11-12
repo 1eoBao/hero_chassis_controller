@@ -21,7 +21,10 @@ find_package(catkin REQUIRED
     realtime_tools
     dynamic_reconfigure
     std_msgs
-    )
+    geometry_msgs
+    nav_msgs
+    tf
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -40,6 +43,9 @@ catkin_package(
     realtime_tools
     dynamic_reconfigure
     std_msgs
+    geometry_msgs
+    nav_msgs
+    tf
 )
 
 ###########
